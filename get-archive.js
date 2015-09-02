@@ -1,5 +1,5 @@
 var cheerio = require('cheerio')
-var request = require('request')
+var request = require('superagent')
 var _ = require('lodash')
 
 module.exports = function (opts, callback) {
@@ -11,16 +11,14 @@ module.exports = function (opts, callback) {
   opts || (opts = {})
   var start = opts.start || 0
 
-  request({
-    url: 'http://www.npr.org/series/98679384/first-listen/archive',
-    qs: {
-      start: start
-    }
-  }, function (err, res, body) {
-    if (err) { return callback(err) }
+  request
+    .get('http://www.npr.org/series/98679384/first-listen/archive')
+    .query({ start: start})
+    .end(function (err, res) {
+      if (err) { return callback(err) }
 
-    callback(null, parseArchive(body))
-  })
+      callback(null, parseArchive(res.text))
+    })
 }
 
 function parseArchive(archive) {

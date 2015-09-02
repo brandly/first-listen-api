@@ -1,13 +1,13 @@
 var cheerio = require('cheerio')
-var request = require('request')
+var request = require('superagent')
 
 module.exports = function getAlbumArtUrl(opts, callback) {
   opts || (opts = {})
 
-  request(opts.url, function (err, res, body) {
+  request(opts.url, function (err, res) {
     if (err) { return callback(err) }
 
-    var $ = cheerio.load(body)
+    var $ = cheerio.load(res.text)
     var albumArtUrl = $('.playlistwrap img')[0].attribs.src
 
     callback(null, albumArtUrl)

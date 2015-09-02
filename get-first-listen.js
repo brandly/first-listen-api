@@ -1,5 +1,5 @@
 var cheerio = require('cheerio')
-var request = require('request')
+var request = require('superagent')
 var _ = require('lodash')
 
 module.exports = function getFirstListen(opts, callback) {
@@ -10,10 +10,10 @@ module.exports = function getFirstListen(opts, callback) {
     fields: 'titles,audio,show',
     sort: 'assigned',
     apiKey: opts.apiKey
-  }, function (err, res, body) {
+  }, function (err, res) {
     if (err) { return callback(err) }
 
-    var $ = cheerio.load(body)
+    var $ = cheerio.load(res.text)
     var audioTags = _.toArray($('audio'))
 
     var albumTitle = $('audio[type="primary"] title')[0].children[0].data
@@ -38,11 +38,10 @@ module.exports = function getFirstListen(opts, callback) {
 };
 
 function nprApiRequest(qs, callback) {
-  request({
-    url: 'http://api.npr.org/query',
-    method: 'GET',
-    qs: qs
-  }, callback)
+  request
+    .get('http://api.npr.org/query')
+    .query(qs)
+    .end(callback)
 }
 
 function getIdFromUrl(url) {

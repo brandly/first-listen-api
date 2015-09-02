@@ -4,8 +4,8 @@ var api = require('../')
 
 module.exports = function getArchiveTests() {
   // assumes getArchive works
-  api.getArchive(function (err, res) {
-    var streaming = utils.getFirstStream(res)
+  api.getArchive(function (err, archive) {
+    var streaming = utils.getFirstStream(archive)
 
     api.getFirstListen({ url: streaming.url, apiKey: utils.apiKey }, function (err, res) {
       assert.equal(true, res.length > 0)
