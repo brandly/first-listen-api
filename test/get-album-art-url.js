@@ -3,12 +3,14 @@ var _ = require('lodash')
 var utils = require('./utils')
 var api = require('../')
 
-module.exports = function getArchiveTests() {
+module.exports = function getArchiveTests () {
   // assumes getArchive works
   api.getArchive(function (err, res) {
+    if (err) { throw err }
     var streaming = utils.getFirstStream(res)
 
     api.getAlbumArtUrl({ url: streaming.url, apiKey: utils.apiKey }, function (err, res) {
+      if (err) { throw err }
       assert.equal(true, _.startsWith(res, 'http'))
       assert.equal(true, _.endsWith(res, '.jpg'))
 

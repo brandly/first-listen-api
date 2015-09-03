@@ -6,10 +6,10 @@ module.exports = {
   apiKey: apiKey
 }
 
-function getFirstStream(list) {
+function getFirstStream (list) {
   return _.first(list.filter(isStreaming))
 }
 
-function isStreaming(item) {
+function isStreaming (item) {
   return item.streaming
 }

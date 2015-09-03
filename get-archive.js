@@ -13,7 +13,7 @@ module.exports = function (opts, callback) {
 
   request
     .get('http://www.npr.org/series/98679384/first-listen/archive')
-    .query({ start: start})
+    .query({ start: start })
     .end(function (err, res) {
       if (err) { return callback(err) }
 
@@ -21,7 +21,7 @@ module.exports = function (opts, callback) {
     })
 }
 
-function parseArchive(archive) {
+function parseArchive (archive) {
   var $ = cheerio.load(archive)
   var itemInfoTags = _.toArray($('.item-info'))
 
@@ -43,7 +43,7 @@ function parseArchive(archive) {
   return songs
 }
 
-function parseFirstListenTitle(title) {
+function parseFirstListenTitle (title) {
   var artistAlbum = splitArtistAlbum(title.split('First Listen: ')[1])
 
   return {
@@ -53,7 +53,7 @@ function parseFirstListenTitle(title) {
   }
 }
 
-function parseReviewTitle(title) {
+function parseReviewTitle (title) {
   var artistAlbum = splitArtistAlbum(title.split('Review: ')[1])
 
   return {
@@ -63,12 +63,12 @@ function parseReviewTitle(title) {
   }
 }
 
-function splitArtistAlbum(str) {
+function splitArtistAlbum (str) {
   var splits = str.split(', \'')
   return [splits[0], splits[1].slice(0, -1)]
 }
 
-function getAudioAvailability($item) {
+function getAudioAvailability ($item) {
   var audioPlayer = $item.find('.audio-player')
   var unavailable = audioPlayer.hasClass('unavailable')
   return {

@@ -1,7 +1,7 @@
 var cheerio = require('cheerio')
 var request = require('superagent')
 
-module.exports = function getAlbumArtUrl(opts, callback) {
+module.exports = function getAlbumArtUrl (opts, callback) {
   opts || (opts = {})
 
   request(opts.url, function (err, res) {

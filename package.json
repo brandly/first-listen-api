@@ -10,7 +10,7 @@
     "superagent": "^1.3.0"
   },
   "scripts": {
-    "test": "node test"
+    "test": "standard && node test"
   },
   "author": "Matthew Brandly <brandly13@gmail.com> (http://brandly.me/)",
   "license": "MIT",
@@ -23,5 +23,8 @@
     "get-archive.js",
     "get-first-listen.js",
     "get-album-art-url.js"
-  ]
+  ],
+  "devDependencies": {
+    "standard": "^5.1.1"
+  }
 }
