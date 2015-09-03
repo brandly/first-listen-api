@@ -46,16 +46,16 @@ To get further than this, you'll need [an API key](http://www.npr.org/api/index)
 If you have an NPR First Listen URL and you want the album artwork, I've got just what you're looking for.
 
 ```js
-api.getAlbumArtUrl({
+firstListenApi.getAlbumArtUrl({
   url: firstListenUrl,
-  apiKey: apiKey }
-, function (err, albumArtUrl) { })
+  apiKey: apiKey
+}, function (err, albumArtUrl) { })
 ```
 
 If you have an NPR First Listen URL that is currently `streaming` and you want the individual songs in that album, you can find them here:
 
 ```js
-api.getFirstListen({
+firstListenApi.getFirstListen({
   url: firstListenUrl,
   apiKey: apiKey
 }, function (err, songs) { })
