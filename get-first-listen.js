@@ -5,43 +5,42 @@ var _ = require('lodash')
 module.exports = function getFirstListen(opts, callback) {
   opts || (opts = {})
 
-  nprApiRequest({
+  var query = {
     id: opts.id || getIdFromUrl(opts.url),
     fields: 'titles,audio,show',
     sort: 'assigned',
     apiKey: opts.apiKey
-  }, function (err, res) {
-    if (err) { return callback(err) }
+  }
 
-    var $ = cheerio.load(res.text)
-    var audioTags = _.toArray($('audio'))
-
-    var albumTitle = $('audio[type="primary"] title')[0].children[0].data
-    var artistName = getArtistFromCDATA($('story title')[0].children[0].data)
-
-    function getSongFromTag(tag, i) {
-      $tag = $(tag)
-      return {
-        track: i + 1,
-        title: $tag.find('title')[0].children[0].data,
-        artist: artistName,
-        album: albumTitle,
-        url: $tag.find('mp3[type="mp3"]')[0].children[0].data
-      }
-    }
-
-    // Last tag is the entire album as a single .mp3 and I don't want it
-    var songs = audioTags.map(getSongFromTag).slice(0, -1)
-
-    callback(null, songs)
-  });
-};
-
-function nprApiRequest(qs, callback) {
   request
     .get('http://api.npr.org/query')
-    .query(qs)
-    .end(callback)
+    .query(query)
+    .end(function (err, res) {
+      if (err) { return callback(err) }
+      callback(null, parseFirstListen(res.text))
+    })
+}
+
+function parseFirstListen(firstListen) {
+  var $ = cheerio.load(firstListen)
+  var audioTags = _.toArray($('audio'))
+
+  var albumTitle = $('audio[type="primary"] title')[0].children[0].data
+  var artistName = getArtistFromCDATA($('story title')[0].children[0].data)
+
+  function getSongFromTag(tag, i) {
+    $tag = $(tag)
+    return {
+      track: i + 1,
+      title: $tag.find('title')[0].children[0].data,
+      artist: artistName,
+      album: albumTitle,
+      url: $tag.find('mp3[type="mp3"]')[0].children[0].data
+    }
+  }
+
+  // Last tag is the entire album as a single .mp3 and I don't want it
+  return audioTags.map(getSongFromTag).slice(0, -1)
 }
 
 function getIdFromUrl(url) {
