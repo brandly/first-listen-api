@@ -65,7 +65,13 @@ function parseReviewTitle (title) {
 
 function splitArtistAlbum (str) {
   var splits = str.split(', \'')
-  return [splits[0], splits[1].slice(0, -1)]
+  if (splits.length === 2) {
+    return [splits[0], splits[1].slice(0, -1)]
+  } else {
+    // Only time I've seen this, it was an album title wrapped in quotes.
+    // slice gets rid of the quotes.
+    return ['Various Artists', str.slice(1, -1)]
+  }
 }
 
 function getAudioAvailability ($item) {

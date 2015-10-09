@@ -1,6 +1,6 @@
 {
   "name": "first-listen-api",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Query data from NPR First Listen",
   "main": "index.js",
   "dependencies": {
