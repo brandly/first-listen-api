@@ -38,6 +38,12 @@ function assertReview (review) {
   assert.equal(true, review.hasOwnProperty('url'))
 }
 
+function assertOther (review) {
+  assert.equal(true, review.hasOwnProperty('artist'))
+  assert.equal(true, review.hasOwnProperty('album'))
+  assert.equal(true, review.hasOwnProperty('url'))
+}
+
 function assertArchiveList (list) {
   list.forEach(function (item) {
     switch (item.type) {
@@ -47,6 +53,10 @@ function assertArchiveList (list) {
 
       case 'review':
         assertReview(item)
+        break
+
+      case 'other':
+        assertOther(item)
         break
 
       default:

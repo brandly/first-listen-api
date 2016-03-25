@@ -31,7 +31,16 @@ function parseArchive (archive) {
     var title = titleAnchor.children[0].data
 
     var isFirstListen = _.startsWith(title, 'First Listen: ')
-    var parsedTitle = isFirstListen ? parseFirstListenTitle(title) : parseReviewTitle(title)
+    var isReview = _.startsWith(title, 'Review: ')
+
+    var parsedTitle
+    if (isFirstListen) {
+      parsedTitle = parseFirstListenTitle(title)
+    } else if (isReview) {
+      parsedTitle = parseReviewTitle(title)
+    } else {
+      parsedTitle = parseOtherTitle(title)
+    }
 
     var audioAvailability = isFirstListen ? getAudioAvailability($item) : null
 
@@ -58,6 +67,16 @@ function parseReviewTitle (title) {
 
   return {
     type: 'review',
+    artist: artistAlbum[0],
+    album: artistAlbum[1]
+  }
+}
+
+function parseOtherTitle (title) {
+  var artistAlbum = splitArtistAlbum(title)
+
+  return {
+    type: 'other',
     artist: artistAlbum[0],
     album: artistAlbum[1]
   }
