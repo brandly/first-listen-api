@@ -6,6 +6,10 @@
 $ npm install --save first-listen-api
 ```
 
+## :warning: :skull: DEPRECATED
+
+This repo no longer works, due to updates on NPR's site. I have no plans to fix this, but if you can get these tests to pass, I will merge your pull request.
+
 ## usage
 
 With CommonJS
